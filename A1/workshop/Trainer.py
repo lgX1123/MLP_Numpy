@@ -49,7 +49,6 @@ class Trainer(object):
             # compute output
             output = self.model.forward(input)
             loss = self.criterion(output, target)
-            print(i, loss)
 
             # compute gradient and do SGD step
             self.model.backward(self.criterion.grad)
@@ -102,5 +101,6 @@ class Trainer(object):
                         top1=top1))
         
         output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} '.format(epoch=epoch + 1 , flag='val', top1=top1))
+        print(output)
 
         return top1.avg

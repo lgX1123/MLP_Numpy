@@ -7,8 +7,14 @@ class MLP(object):
     def add_layer(self, layer):
         self.layers.append(layer)
         if layer.requires_grad:
-            self.params.append(layer.W)
-            self.params.append(layer.b)
+            if hasattr(layer, 'W'):
+                self.params.append(layer.W)
+            if hasattr(layer, 'b'):
+                self.params.append(layer.b)
+            if hasattr(layer, 'gamma'):
+                self.params.append(layer.gamma)
+            if hasattr(layer, 'beta'):
+                self.params.append(layer.beta)
         self.num_layers += 1
 
     def forward(self, x):

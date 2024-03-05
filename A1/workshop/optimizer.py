@@ -11,7 +11,7 @@ class SGD(object):
     def step(self):
         for i, (v, p) in enumerate(zip(self.v, self.parameters)):
             if not p.skip_decay:
-                p.data *= self.weight_decay
-            v = self.momentum * v - self.lr * p.grad
+                p.data -= self.weight_decay * p.data
+            v = self.momentum * v + self.lr * p.grad
             self.v[i] = v
             p.data -= self.v[i]

@@ -32,16 +32,18 @@ def main():
 
     layers = [
         {'type': 'linear', 'params': {'name': 'fc1', 'in_num': 128, 'out_num': 64}},
-        {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
+        # {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
         {'type': 'relu', 'params': {'name': 'relu1'}}, 
-        {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 64, 'out_num': 10}}
+        # {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 256, 'out_num': 128}},
+        # {'type': 'relu', 'params': {'name': 'relu2'}}, 
+        {'type': 'linear', 'params': {'name': 'fc3', 'in_num': 64, 'out_num': 10}},
     ]
-    lr = 0.001
-    bs = 1024
+    lr = 0.01
+    bs = 64
     momentum = 0.9
-    weight_decay = 5e-3     # 2e-4, 1e-4
+    weight_decay = 0     # 2e-4, 1e-4
     seed = 0
-    epoch = 10
+    epoch = 200
 
     config = {
         'layers': layers,

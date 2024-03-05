@@ -102,7 +102,7 @@ class AverageMeter(object):
 
 def accuracy(output, target):
     preds = output.argmax(axis=-1, keepdims=True)
-    return np.mean(preds == target)
+    return np.mean(preds == target) * 100
 
 
 def timer(func):
