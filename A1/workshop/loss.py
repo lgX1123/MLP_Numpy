@@ -14,7 +14,7 @@ class CrossEntropyLoss(object):
 
         self.grad = preds - ground_truth    #TODO: 推导要写在report上不？
 
-        loss = -1 * (ground_truth * np.log(preds)).sum() / self.bacth_size
+        loss = -1 * (ground_truth * np.log(preds + 1e-8)).sum() / self.bacth_size
 
         return loss
     

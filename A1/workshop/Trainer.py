@@ -41,6 +41,8 @@ class Trainer(object):
         losses = AverageMeter()
         top1 = AverageMeter()
 
+        self.model.train()
+
         end = time.time()
 
         for i, (input, target) in enumerate(self.train_loader):
@@ -76,6 +78,8 @@ class Trainer(object):
         batch_time = AverageMeter()
         losses = AverageMeter()
         top1 = AverageMeter()
+
+        self.model.test()
 
         end = time.time()
         for i, (input, target) in enumerate(self.val_loader):

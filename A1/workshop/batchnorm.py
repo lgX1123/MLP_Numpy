@@ -9,15 +9,27 @@ class batchnorm(Layer):
         self.beta = Parameter(np.random.uniform(-0.1, 0.1, shape), requires_grad, skip_decay=True)
         self.requires_grad = requires_grad
 
+        self.overall_mean = Parameter(np.zeros(shape), False)
+        self.overall_var = Parameter(np.zeros(shape), False)
+
     
     def forward(self, input):
-        batch_mean = input.mean(axis=0)
-        batch_std = np.sqrt(input.std(axis=0) + 1e-8)    # To avoid divided by 0
-        
-        self.norm = (input - batch_mean) / batch_std
-        self.gamma_norm = self.gamma.data / batch_std
+        if self.train:
+            batch_mean = input.mean(axis=0)
+            batch_std = np.sqrt(input.std(axis=0) + 1e-8)    # To avoid divided by 0
+            
+            self.norm = (input - batch_mean) / batch_std
+            self.gamma_norm = self.gamma.data / batch_std
 
-        return self.gamma.data * self.norm + self.beta.data
+            # compute overall mean and var. Estimate, no need use accurate formula which may cause overflow.
+
+
+            return self.gamma.data * self.norm + self.beta.data
+        
+        else:
+            pass
+
+
     
     def backward(self, grad_output):        
         batch_size = grad_output.shape[0]

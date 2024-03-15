@@ -38,10 +38,10 @@ def main():
         # {'type': 'relu', 'params': {'name': 'relu2'}}, 
         {'type': 'linear', 'params': {'name': 'fc3', 'in_num': 64, 'out_num': 10}},
     ]
-    lr = 0.01
-    bs = 64
+    lr = 0.1
+    bs = 1024
     momentum = 0.9
-    weight_decay = 0     # 2e-4, 1e-4
+    weight_decay = 5e-4     # 2e-4, 1e-4
     seed = 0
     epoch = 200
 

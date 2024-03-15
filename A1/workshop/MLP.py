@@ -26,3 +26,11 @@ class MLP(object):
         for layer in self.layers[::-1]:
             x = layer.backward(x)
         return x
+    
+    def train(self):
+        for layer in self.layers:
+            layer.train = True
+    
+    def test(self):
+        for layer in self.layers:
+            layer.train = False

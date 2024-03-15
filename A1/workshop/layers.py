@@ -7,6 +7,7 @@ class Layer(object):
     def __init__(self, name, requires_grad=False):
         self.name = name 
         self.requires_grad = requires_grad
+        self.train = True
         
     def forward(self, *args):
         pass
