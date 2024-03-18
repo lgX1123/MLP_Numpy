@@ -32,7 +32,7 @@ def main():
 
     layers = [
         {'type': 'linear', 'params': {'name': 'fc1', 'in_num': 128, 'out_num': 64}},
-        # {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
+        {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
         {'type': 'relu', 'params': {'name': 'relu1'}}, 
         # {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 256, 'out_num': 128}},
         # {'type': 'relu', 'params': {'name': 'relu2'}}, 
@@ -43,7 +43,7 @@ def main():
     momentum = 0.9
     weight_decay = 5e-4     # 2e-4, 1e-4
     seed = 0
-    epoch = 200
+    epoch = 100
 
     config = {
         'layers': layers,

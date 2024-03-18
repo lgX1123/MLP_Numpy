@@ -15,3 +15,8 @@ class SGD(object):
             v = self.momentum * v + self.lr * p.grad
             self.v[i] = v
             p.data -= self.v[i]
+
+
+class Adam(object):
+    def __init__(self):
+        pass
