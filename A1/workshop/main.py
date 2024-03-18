@@ -7,6 +7,7 @@ from MLP import MLP
 from layers import *
 from Trainer import Trainer
 from batchnorm import batchnorm
+from dropout import dropout
 
 def get_model(layers):
     model = MLP()
@@ -15,6 +16,7 @@ def get_model(layers):
         'relu': relu, 
         'sigmoid': sigmoid, 
         'batchnorm': batchnorm,
+        'dropout': dropout
     }
     for i in layers:
         model.add_layer(str2obj[i['type']](**i['params']))
@@ -33,6 +35,7 @@ def main():
     layers = [
         {'type': 'linear', 'params': {'name': 'fc1', 'in_num': 128, 'out_num': 64}},
         {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
+        {'type': 'dropout', 'params': {'name': 'dropout', 'drop_rate': 0.1}},
         {'type': 'relu', 'params': {'name': 'relu1'}}, 
         # {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 256, 'out_num': 128}},
         # {'type': 'relu', 'params': {'name': 'relu2'}}, 
@@ -55,6 +58,7 @@ def main():
         'epoch': epoch,
         
     }
+    np.random.seed(config['seed'])
 
 
     train_dataloader = Dataloader(train_X, train_y, config['bs'], shuffle=True, seed=config['seed'])

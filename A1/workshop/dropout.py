@@ -9,11 +9,14 @@ class dropout(Layer):
         self.fix_value = 1 / (1 - self.drop_rate)   # to keep average fixed
 
     def forward(self, input):
-        if not self.train:
-            return input
-        else:
+        if self.train:
             self.mask = np.random.uniform(0, 1, input.shape) > self.drop_rate
             return input * self.mask * self.fix_value
+        else:
+            return input
 
     def backward(self, grad_output):
-        return grad_output * self.mask
+        if self.train:
+            return grad_output * self.mask
+        else:
+            return grad_output
