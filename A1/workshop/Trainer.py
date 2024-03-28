@@ -20,7 +20,7 @@ class Trainer(object):
         if self.config['optimizer'] == 'sgd':
             self.optimizer = SGD(self.model.params, self.config['momentum'], self.lr, self.config['weight_decay'])
         elif self.config['optimizer'] == 'adam':
-            self.optimizer = Adam(self.model.params, self.lr)
+            self.optimizer = Adam(self.model.params, self.lr, self.config['weight_decay'])
         self.train_scheduler = CosineLR(self.optimizer, T_max=self.epochs)
 
     def train(self):
@@ -37,6 +37,7 @@ class Trainer(object):
             best_acc1 = max(acc1, best_acc1)
             output_best = 'Best Prec@1: %.3f\n' % (best_acc1)
             print(output_best)
+            # time.sleep(1)
 
     
     def train_per_epoch(self, epoch):

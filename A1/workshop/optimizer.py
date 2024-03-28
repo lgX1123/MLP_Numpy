@@ -9,6 +9,7 @@ class SGD(object):
         self.v = [np.zeros(p.data.shape) for p in self.parameters]
 
     def step(self):
+        x = 1
         for i, (v, p) in enumerate(zip(self.v, self.parameters)):
             if not p.skip_decay:
                 p.data -= self.weight_decay * p.data
@@ -28,23 +29,23 @@ class Adam(object):
         self.m = [np.zeros(p.data.shape) for p in self.parameters]
         self.v = [np.zeros(p.data.shape) for p in self.parameters]
 
-        self.accu_beta1 = self.beta1
-        self.accu_beta2 = self.beta2
+        self.iterations = 0
     
     def step(self):
-        self.accu_beta1 *= self.beta1
-        self.accu_beta2 *= self.beta2
-        # lr = self.lr * ((1 - self.accu_beta2) ** 0.5) / (1 -self.accu_beta1)
-        lr = self.lr
+        self.iterations += 1
         for i, (p, m, v) in enumerate(zip(self.parameters, self.m, self.v)):
             if not p.skip_decay:
-                p.data *= self.weight_decay
-            self.m[i] = self.beta1 * m + (1 - self.beta1) * p.grad
-            self.v[i] = self.beta2 * v + (1 - self.beta2) * np.power(p.grad, 2)
+                p.data -= self.weight_decay * p.data
+            m = self.beta1 * m + (1 - self.beta1) * p.grad
+            v = self.beta2 * v + (1 - self.beta2) * np.power(p.grad, 2)
+
+            self.m[i] = m
+            self.v[i] = v
             
             # bias correction
-            #TODO
+            m = m / (1 - np.power(self.beta1, self.iterations))
+            v = v / (1 - np.power(self.beta2, self.iterations))
 
-            p.data -= lr * self.m[i] / (np.sqrt(self.v[i] + self.eps))
+            p.data -= self.lr * m / (np.sqrt(v + self.eps))
 
             
