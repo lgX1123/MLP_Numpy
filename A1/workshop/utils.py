@@ -67,7 +67,7 @@ def _calculate_correct_fan(array, mode):
     fan_in, fan_out = _calculate_fan_in_and_fan_out(array)
     return fan_in if mode == 'fan_in' else fan_out
 
-def kaiming_normal_(array: np.array, a: float = 0, mode: str = 'fan_in', nonlinearity: str = 'leaky_relu'):
+def kaiming_normal_(array: np.array, a: float = 0, mode: str = 'fan_in', nonlinearity: str = 'relu'):
     fan = _calculate_correct_fan(array, mode)
     gain = calculate_gain(nonlinearity, a)
     std = gain / math.sqrt(fan)
