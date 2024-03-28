@@ -45,17 +45,18 @@ def main():
         {'type': 'linear', 'params': {'name': 'fc3', 'in_num': 64, 'out_num': 10}},
     ]
   
-
+    bs = 1024
     config = {
         'layers': layers,
         'lr': 0.1, 
-        'bs': 1024,
+        'bs': bs,
         'momentum': 0.9,
         'weight_decay': 5e-4,   # 2e-4, 1e-4
         'seed': 0,
         'epoch': 20,
         'optimizer': 'sgd',  # adam, sgd
-        'pre-process': 'norm'      # min-max, norm, None
+        'pre-process': 'norm',      # min-max, norm, None
+        'print_freq': 50000 // bs // 5
     }
     np.random.seed(config['seed'])
 

@@ -14,6 +14,7 @@ class Trainer(object):
         self.model = model
         self.train_loader = train_loader
         self.val_loader = val_loader
+        self.print_freq = self.config['print_freq']
 
         self.criterion = CrossEntropyLoss()
         if self.config['optimizer'] == 'sgd':
@@ -40,7 +41,6 @@ class Trainer(object):
     
     def train_per_epoch(self, epoch):
         batch_time = AverageMeter()
-        data_time = AverageMeter()
         losses = AverageMeter()
         top1 = AverageMeter()
 
@@ -49,8 +49,6 @@ class Trainer(object):
         end = time.time()
 
         for i, (input, target) in enumerate(self.train_loader):
-            data_time.update(time.time() - end)
-
             # compute output
             output = self.model.forward(input)
             loss = self.criterion(output, target)
@@ -68,14 +66,16 @@ class Trainer(object):
             batch_time.update(time.time() - end)
             end = time.time()
 
-            if i % 100 == 0:
+            if (i % self.print_freq == 0) or (i == len(self.train_loader) - 1):
                 print('Epoch: [{0}][{1}/{2}]\t'
                     'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                    'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
                     'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                     'Prec@1 {top1.val:.3f} ({top1.avg:.3f})'.format(
-                        epoch, i, len(self.train_loader), batch_time=batch_time,
-                        data_time=data_time, loss=losses, top1=top1))
+                        epoch + 1, i, len(self.train_loader) - 1, batch_time=batch_time,
+                        loss=losses, top1=top1))
+        
+        output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} '.format(epoch=epoch + 1 , flag='train', top1=top1))
+        print(output)
                 
     def validate(self, epoch):
         batch_time = AverageMeter()
@@ -99,12 +99,12 @@ class Trainer(object):
             batch_time.update(time.time() - end)
             end = time.time()
 
-            if i % 100 == 0:
+            if (i % self.print_freq == 0) or (i == len(self.val_loader) - 1):
                 print('Test: [{0}/{1}]\t'
                     'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                     'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                     'Prec@1 {top1.val:.3f} ({top1.avg:.3f})'.format(
-                        i, len(self.val_loader), batch_time=batch_time, loss=losses,
+                        i, len(self.val_loader) - 1, batch_time=batch_time, loss=losses,
                         top1=top1))
         
         output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} '.format(epoch=epoch + 1 , flag='val', top1=top1))
