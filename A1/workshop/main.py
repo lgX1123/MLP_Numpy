@@ -41,22 +41,17 @@ def main():
         # {'type': 'relu', 'params': {'name': 'relu2'}}, 
         {'type': 'linear', 'params': {'name': 'fc3', 'in_num': 64, 'out_num': 10}},
     ]
-    lr = 0.1
-    bs = 1024
-    momentum = 0.9
-    weight_decay = 5e-4     # 2e-4, 1e-4
-    seed = 0
-    epoch = 100
+  
 
     config = {
         'layers': layers,
-        'lr': lr, 
-        'bs': bs,
-        'momentum': momentum,
-        'weight_decay': weight_decay,
-        'seed': seed,
-        'epoch': epoch,
-        
+        'lr': 0.1, 
+        'bs': 1024,
+        'momentum': 0.9,
+        'weight_decay': 5e-4,   # 2e-4, 1e-4
+        'seed': 0,
+        'epoch': 10,
+        'optimizer': 'adam'  # adam
     }
     np.random.seed(config['seed'])
 

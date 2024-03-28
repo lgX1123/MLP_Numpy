@@ -16,7 +16,10 @@ class Trainer(object):
         self.val_loader = val_loader
 
         self.criterion = CrossEntropyLoss()
-        self.optimizer = SGD(self.model.params, self.config['momentum'], self.lr, self.config['weight_decay'])
+        if self.config['optimizer'] == 'sgd':
+            self.optimizer = SGD(self.model.params, self.config['momentum'], self.lr, self.config['weight_decay'])
+        elif self.config['optimizer'] == 'adam':
+            self.optimizer = Adam(self.model.params, self.lr)
         self.train_scheduler = CosineLR(self.optimizer, T_max=self.epochs)
 
     def train(self):
