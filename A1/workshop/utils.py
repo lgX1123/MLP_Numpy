@@ -117,3 +117,24 @@ def timer(func):
         print(f"{func.__name__} executed in {(end_time - start_time):.4f} seconds")
         return result
     return wrapper
+
+
+def get_transform(train_X, test_X, mode=None):
+    if mode == 'min-max':
+        min_each_feature = np.min(train_X, axis=0)
+        max_each_feature = np.max(train_X, axis=0)
+        scale = max_each_feature - min_each_feature
+        scale[scale == 0] = 1   # To avoid divided by 0
+        scaled_train = (train_X - min_each_feature) / scale
+        scaled_test = (test_X - min_each_feature) / scale
+        return scaled_train, scaled_test
+
+    if mode == 'norm':
+        std_each_feature = np.std(train_X, axis=0)
+        mean_each_feature = np.mean(train_X, axis=0)
+        std_each_feature[std_each_feature == 0] = 1     # To avoid divided by 0
+        norm_train = (train_X - mean_each_feature) / std_each_feature
+        norm_test = (test_X - mean_each_feature) / std_each_feature
+        return norm_train, norm_test
+
+    return train_X, test_X

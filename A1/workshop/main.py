@@ -8,6 +8,9 @@ from layers import *
 from Trainer import Trainer
 from batchnorm import batchnorm
 from dropout import dropout
+from utils import *
+
+
 
 def get_model(layers):
     model = MLP()
@@ -50,11 +53,14 @@ def main():
         'momentum': 0.9,
         'weight_decay': 5e-4,   # 2e-4, 1e-4
         'seed': 0,
-        'epoch': 10,
-        'optimizer': 'adam'  # adam
+        'epoch': 20,
+        'optimizer': 'sgd',  # adam, sgd
+        'pre-process': 'norm'      # min-max, norm, None
     }
     np.random.seed(config['seed'])
 
+    # pre process
+    train_X, test_X = get_transform(train_X, test_X, config['pre-process'])
 
     train_dataloader = Dataloader(train_X, train_y, config['bs'], shuffle=True, seed=config['seed'])
     test_dataloader = Dataloader(test_X, test_y, config['bs'], shuffle=False)
