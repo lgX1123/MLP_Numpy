@@ -26,7 +26,7 @@ def get_model(layers):
     }
     for i in layers:
         model.add_layer(str2obj[i['type']](**i['params']))
-
+    
     return model
 
 @timer
@@ -44,8 +44,8 @@ def main():
         {'type': 'dropout', 'params': {'name': 'dropout', 'drop_rate': 0.1}},
         # {'type': 'sigmoid', 'params': {'name': 'sigmoid'}},  
         # {'type': 'leaky_relu', 'params': {'name': 'leaky_relu1', 'alpha': 0.1}},  
-        #{'type': 'relu', 'params': {'name': 'relu1'}},  
-        {'type': 'tanh', 'params': {'name': 'tanh1'}},  
+        {'type': 'relu', 'params': {'name': 'relu1'}},  
+        #{'type': 'tanh', 'params': {'name': 'tanh1'}},  
         #{'type': 'gelu', 'params': {'name': 'gelu1'}},  
         # {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 256, 'out_num': 128}},
         # {'type': 'relu', 'params': {'name': 'relu2'}}, 
