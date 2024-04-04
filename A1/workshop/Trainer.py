@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 import time
 from loss import *
 from optimizer import *
@@ -121,3 +124,21 @@ class Trainer(object):
 
         return top1.avg
     
+    def plot_cm(self, save_path):
+        self.model.test()
+        y_pred = []
+        y_true = []
+        for i, (input, target) in enumerate(self.val_loader):
+            # compute output
+            output = self.model.forward(input)
+            output = np.argmax(output, axis=1)
+            y_pred += list(output)
+            y_true += list(target.flatten())
+            
+        cm = confusion_matrix(y_true, y_pred)
+        plt.figure()
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+        plt.title("Confusion Matrix")
+        plt.ylabel("Ground Truth")
+        plt.xlabel("Prediction")
+        plt.savefig(save_path)

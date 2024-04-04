@@ -75,6 +75,7 @@ def main():
     model = get_model(config['layers'])
     trainer = Trainer(config, model, train_dataloader, test_dataloader)
     trainer.train()
+    trainer.plot_cm('../figs/cm.png')
 
 
 if __name__ == '__main__':
