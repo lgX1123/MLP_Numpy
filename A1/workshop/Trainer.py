@@ -18,6 +18,7 @@ class Trainer(object):
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.print_freq = self.config['print_freq']
+        self.scheduler = self.config['scheduler']
         self.train_precs = []
         self.test_precs = []
         self.train_losses = []
@@ -28,7 +29,8 @@ class Trainer(object):
             self.optimizer = SGD(self.model.params, self.config['momentum'], self.lr, self.config['weight_decay'])
         elif self.config['optimizer'] == 'adam':
             self.optimizer = Adam(self.model.params, self.lr, self.config['weight_decay'])
-        self.train_scheduler = CosineLR(self.optimizer, T_max=self.epochs)
+        if self.scheduler:
+            self.train_scheduler = CosineLR(self.optimizer, T_max=self.epochs)
 
     @timer
     def train(self):
@@ -36,7 +38,8 @@ class Trainer(object):
         for epoch in range(self.epochs):
             print('current lr {:.5e}'.format(self.optimizer.lr))
             self.train_per_epoch(epoch)
-            self.train_scheduler.step()
+            if self.scheduler:
+                self.train_scheduler.step()
 
             # evaluate on validation set
             acc1 = self.validate(epoch)
@@ -142,3 +145,4 @@ class Trainer(object):
         plt.ylabel("Ground Truth")
         plt.xlabel("Prediction")
         plt.savefig(save_path)
+        

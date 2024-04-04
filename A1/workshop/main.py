@@ -62,6 +62,7 @@ def main():
         'seed': 0,
         'epoch': 100,
         'optimizer': 'sgd',  # adam, sgd
+        'scheduler': None, # cos, None
         'pre-process': 'norm',      # min-max, norm, None
         'print_freq': 50000 // bs // 5
     }
