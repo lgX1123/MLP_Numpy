@@ -35,26 +35,12 @@ class leaky_relu(Layer):
         self.alpha = alpha
 
     def forward(self, input):
+        self.input = input
         return np.where(input > 0, input, self.alpha * input)
     
     def backward(self, grad_output):
-        x = np.ones_like(grad_output)
-        x[grad_output < 0] *= self.alpha
-        return x
-    
-
-class gelu(Layer):
-    def __init__(self, name, requires_grad=False):
-        super().__init__(name, requires_grad)
-
-    def forward(self, input):
-        vec_erf = np.vectorize(math.erf)
-        return 0.5 * input * (1 + vec_erf(input / np.sqrt(2)))
-    
-    def backward(self, grad_output):
-        vec_erf = np.vectorize(math.erf)
-        return 0.5 + 0.5 * vec_erf(grad_output / np.sqrt(2)) + \
-            ((0.5 * grad_output * ((2 / np.sqrt(np.pi)) * np.exp(-(grad_output ** 2)))) / np.sqrt(2))
+        tmp = np.where(self.input > 0, 1, self.alpha)
+        return tmp * grad_output
     
 
 class sigmoid(Layer):
@@ -74,10 +60,11 @@ class tanh(Layer):
         super().__init__(name, requires_grad)
 
     def forward(self, input):
+        self.y = np.tanh(input)
         return np.tanh(input)
     
     def backward(self, grad_output):
-        return 1 - np.tanh(grad_output) ** 2
+        return (1 - self.y ** 2) * grad_output
 
 
 class softmax(Layer):
