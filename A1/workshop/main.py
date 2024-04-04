@@ -28,7 +28,7 @@ def get_model(layers):
     
     return model
 
-@timer
+
 def main():
     file_path = '../Assignment1-Dataset/'
 
@@ -40,26 +40,28 @@ def main():
     layers = [
         {'type': 'linear', 'params': {'name': 'fc1', 'in_num': 128, 'out_num': 64}},
         {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
-        {'type': 'dropout', 'params': {'name': 'dropout', 'drop_rate': 0.1}},
+        {'type': 'dropout', 'params': {'name': 'dropout1', 'drop_rate': 0.1}},
         # {'type': 'sigmoid', 'params': {'name': 'sigmoid'}},  
         {'type': 'leaky_relu', 'params': {'name': 'leaky_relu1', 'alpha': 0.1}},  
         #{'type': 'relu', 'params': {'name': 'relu1'}},  
         #{'type': 'tanh', 'params': {'name': 'tanh1'}},  
-        # {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 256, 'out_num': 128}},
-        # {'type': 'relu', 'params': {'name': 'relu2'}}, 
-        {'type': 'linear', 'params': {'name': 'fc3', 'in_num': 64, 'out_num': 10}},
+        {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 64, 'out_num': 32}},
+        {'type': 'batchnorm', 'params': {'name': 'bn2', 'shape': 32}}, 
+        {'type': 'dropout', 'params': {'name': 'dropout2', 'drop_rate': 0.1}},
+        {'type': 'relu', 'params': {'name': 'relu2'}}, 
+        {'type': 'linear', 'params': {'name': 'fc3', 'in_num': 32, 'out_num': 10}},
     ]
   
-    bs = 1024
+    bs = 128
     config = {
         'layers': layers,
-        'lr': 0.01, 
+        'lr': 0.1, 
         'bs': bs,
         'momentum': 0.9,
         'weight_decay': 5e-4,   # 5e-4, 2e-4, 1e-4, 5e-3, 0
         'seed': 0,
         'epoch': 100,
-        'optimizer': 'adam',  # adam, sgd
+        'optimizer': 'sgd',  # adam, sgd
         'pre-process': 'norm',      # min-max, norm, None
         'print_freq': 50000 // bs // 5
     }

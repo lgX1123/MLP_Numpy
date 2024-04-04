@@ -15,6 +15,10 @@ class Trainer(object):
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.print_freq = self.config['print_freq']
+        self.train_precs = []
+        self.test_precs = []
+        self.train_losses = []
+        self.test_losses = []
 
         self.criterion = CrossEntropyLoss()
         if self.config['optimizer'] == 'sgd':
@@ -23,6 +27,7 @@ class Trainer(object):
             self.optimizer = Adam(self.model.params, self.lr, self.config['weight_decay'])
         self.train_scheduler = CosineLR(self.optimizer, T_max=self.epochs)
 
+    @timer
     def train(self):
         best_acc1 = 0
         for epoch in range(self.epochs):
@@ -37,7 +42,6 @@ class Trainer(object):
             best_acc1 = max(acc1, best_acc1)
             output_best = 'Best Prec@1: %.3f\n' % (best_acc1)
             print(output_best)
-            # time.sleep(1)
 
     
     def train_per_epoch(self, epoch):
@@ -75,8 +79,10 @@ class Trainer(object):
                         epoch + 1, i, len(self.train_loader) - 1, batch_time=batch_time,
                         loss=losses, top1=top1))
         
-        output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} '.format(epoch=epoch + 1 , flag='train', top1=top1))
+        output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} Loss: {losses.avg:.4f}'.format(epoch=epoch + 1 , flag='train', top1=top1, losses=losses))
         print(output)
+        self.train_losses.append(losses.avg)
+        self.train_precs.append(top1.avg)
                 
     def validate(self, epoch):
         batch_time = AverageMeter()
@@ -108,7 +114,10 @@ class Trainer(object):
                         i, len(self.val_loader) - 1, batch_time=batch_time, loss=losses,
                         top1=top1))
         
-        output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} '.format(epoch=epoch + 1 , flag='val', top1=top1))
+        output = ('EPOCH: {epoch} {flag} Results: Prec@1 {top1.avg:.3f} Loss: {losses.avg:.4f}'.format(epoch=epoch + 1 , flag='val', top1=top1, losses=losses))
         print(output)
+        self.test_losses.append(losses.avg)
+        self.test_precs.append(top1.avg)
 
         return top1.avg
+    
