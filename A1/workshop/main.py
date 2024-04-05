@@ -42,8 +42,8 @@ def main():
         {'type': 'batchnorm', 'params': {'name': 'bn1', 'shape': 64}}, 
         {'type': 'dropout', 'params': {'name': 'dropout1', 'drop_rate': 0.1}},
         # {'type': 'sigmoid', 'params': {'name': 'sigmoid'}},  
-        {'type': 'leaky_relu', 'params': {'name': 'leaky_relu1', 'alpha': 0.1}},  
-        #{'type': 'relu', 'params': {'name': 'relu1'}},  
+        #{'type': 'leaky_relu', 'params': {'name': 'leaky_relu1', 'alpha': 0.1}},  
+        {'type': 'relu', 'params': {'name': 'relu1'}},  
         #{'type': 'tanh', 'params': {'name': 'tanh1'}},  
         {'type': 'linear', 'params': {'name': 'fc2', 'in_num': 64, 'out_num': 32}},
         {'type': 'batchnorm', 'params': {'name': 'bn2', 'shape': 32}}, 
@@ -62,7 +62,7 @@ def main():
         'seed': 0,
         'epoch': 100,
         'optimizer': 'sgd',  # adam, sgd
-        'scheduler': None, # cos, None
+        'scheduler': 'cos', # cos, None
         'pre-process': 'norm',      # min-max, norm, None
         'print_freq': 50000 // bs // 5
     }
