@@ -1,5 +1,5 @@
 # COMP5329
- comp5329 USYD
+Pure numpy MLP for multi-classification.
 
 | Modules                | Baseline          | Best Model        |
 | ---------------------- | ----------------- | ----------------- |
